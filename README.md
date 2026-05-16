@@ -2,7 +2,7 @@
 
 > An interactive AI-powered web application that classifies customer reviews and social media comments as **Positive**, **Negative**, or **Neutral** using Natural Language Processing.
 
-**Built by Bongimusa Khoza** | Individual Project — Week 3 | 2026
+**Built by Bongimusa Khoza** 
 
 ---
 
