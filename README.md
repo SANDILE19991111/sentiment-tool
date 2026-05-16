@@ -8,7 +8,7 @@
 
 ## 🌐 Live Demo
 
-👉 **[View Live App](https://your-app.streamlit.app)** *(update after deployment)*
+👉 **[View Live App](https://sentiment-tool-hd6pd9vitvfbfjn89jjakf.streamlit.app/)** *(update after deployment)*
 
 ---
 
