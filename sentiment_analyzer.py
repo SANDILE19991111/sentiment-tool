@@ -22,11 +22,16 @@ class SentimentAnalyzer:
         text = re.sub(r'\s+', ' ', text).strip()
         return text
 
-    def analyze(self, text: str) -> Dict:
+    def analyze(self, text) -> Dict:
+        # Ensure text is always a plain string (Python 3.14 compatible)
+        if not isinstance(text, str):
+            text = str(text) if text is not None else ""
+        text = text.strip()
+
         cleaned = self.clean_text(text)
         blob = TextBlob(cleaned)
-        polarity = blob.sentiment.polarity
-        subjectivity = blob.sentiment.subjectivity
+        polarity = float(blob.sentiment.polarity)
+        subjectivity = float(blob.sentiment.subjectivity)
 
         if polarity > 0.05:
             sentiment = "POSITIVE"
@@ -38,8 +43,12 @@ class SentimentAnalyzer:
             sentiment = "NEUTRAL"
             confidence = round(0.50 + (0.05 - abs(polarity)), 3)
 
+        # Safe text truncation
+        text_str = str(text)
+        display_text = (text_str[:120] + "...") if len(text_str) > 120 else text_str
+
         return {
-            "text": text[:120] + "..." if len(text) > 120 else text,
+            "text": display_text,
             "sentiment": sentiment,
             "confidence": confidence,
             "polarity": round(polarity, 3),
@@ -51,7 +60,11 @@ class SentimentAnalyzer:
         return [self.analyze(t) for t in texts]
 
     def analyze_dataframe(self, df: pd.DataFrame, text_column: str) -> pd.DataFrame:
-        results = df[text_column].apply(self.analyze).apply(pd.Series)
+        # Use explicit loop for Python 3.14 compatibility
+        records = []
+        for val in df[text_column]:
+            records.append(self.analyze(val))
+        results = pd.DataFrame(records)
         return pd.concat([df.reset_index(drop=True), results], axis=1)
 
 
