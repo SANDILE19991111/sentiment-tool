@@ -278,7 +278,7 @@ Average confidence: <b>{res['confidence'].mean():.0%}</b>
         if val == 'NEGATIVE': return 'background-color: #f8d7da; color: #721c24'
         return 'background-color: #fff3cd; color: #856404'
 
-    styled = display.style.applymap(colour_sentiment, subset=['Sentiment'])
+    styled = display.style.map(colour_sentiment, subset=['Sentiment'])
     st.dataframe(styled, use_container_width=True)
 
     st.divider()
