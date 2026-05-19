@@ -94,7 +94,7 @@ elif data_option == "💬 Sample Social Media":
 elif data_option == "📂 Upload CSV":
     uploaded = st.file_uploader("Upload your CSV file", type=["csv"])
     if uploaded:
-        df = pd.read_csv(uploaded)
+        try:     df = pd.read_csv(uploaded) except Exception:     try:         uploaded.seek(0)         df = pd.read_csv(uploaded, sep=';')     except Exception:         try:             uploaded.seek(0)             df = pd.read_csv(uploaded, sep='	')         except Exception:             try:                 uploaded.seek(0)                 df = pd.read_csv(uploaded, encoding='latin-1')             except Exception:                 st.error("❌ Could not read this file. Please make sure it is a valid CSV file.")                 df = None
         text_col = st.selectbox("Which column contains the text?", df.columns.tolist())
         st.dataframe(df.head(3), use_container_width=True)
     else:
