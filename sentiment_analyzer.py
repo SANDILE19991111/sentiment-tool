@@ -23,11 +23,9 @@ class SentimentAnalyzer:
         return text
 
     def analyze(self, text) -> Dict:
-        # Ensure text is always a plain string (Python 3.14 compatible)
         if not isinstance(text, str):
             text = str(text) if text is not None else ""
         text = text.strip()
-
         cleaned = self.clean_text(text)
         blob = TextBlob(cleaned)
         polarity = float(blob.sentiment.polarity)
@@ -43,7 +41,6 @@ class SentimentAnalyzer:
             sentiment = "NEUTRAL"
             confidence = round(0.50 + (0.05 - abs(polarity)), 3)
 
-        # Safe text truncation
         text_str = str(text)
         display_text = (text_str[:120] + "...") if len(text_str) > 120 else text_str
 
@@ -60,7 +57,6 @@ class SentimentAnalyzer:
         return [self.analyze(t) for t in texts]
 
     def analyze_dataframe(self, df: pd.DataFrame, text_column: str) -> pd.DataFrame:
-        # Use explicit loop for Python 3.14 compatibility
         records = []
         for val in df[text_column]:
             records.append(self.analyze(val))
@@ -114,4 +110,38 @@ def get_sample_social():
             "Pretty decent for everyday use. Gets the job done.",
         ],
         "platform": ["Social Media"] * 13
+    })
+
+
+def get_sample_ecommerce():
+    return pd.DataFrame({
+        "review": [
+            "Ordered on Monday and received on Wednesday. Super fast shipping! Product exactly as described.",
+            "Wrong item was delivered. Contacted support and they ignored me for a week. Terrible experience.",
+            "Great price for the quality. Will definitely shop here again. Five stars!",
+            "Package arrived damaged. The seller refused to give a refund. Very frustrating.",
+            "Easy checkout process and fast delivery. Exactly what I was looking for.",
+            "Product looks nothing like the photos. Misleading listing. Very disappointed.",
+            "Amazing deal! Got it half price during the sale. Works perfectly.",
+            "Delivery took 3 weeks. No tracking updates. I had to chase them multiple times.",
+            "Good quality for the price. Packaging was secure and delivery was on time.",
+            "Item was faulty out of the box. Replacement was sent quickly though. Happy now.",
+            "Best online shopping experience I have had. Will recommend to everyone.",
+            "Size was completely wrong. Return process was a nightmare. Never again.",
+            "Exactly as advertised. Arrived on time and in perfect condition.",
+            "Cheap product that broke within a week. Total waste of money.",
+            "Great seller, fast communication and quick dispatch. Very happy customer.",
+            "The discount code did not work and support never responded. Very poor.",
+            "Brilliant product at an unbeatable price. Already ordered a second one.",
+            "Arrived late for Christmas. Ruined the surprise. Very upset.",
+            "Smooth and easy shopping experience. Product is high quality. Recommended!",
+            "Packaging was damaged but product inside was fine. Could be better."
+        ],
+        "category": [
+            "Electronics", "Clothing", "Home & Garden", "Electronics", "Sports",
+            "Clothing", "Electronics", "Home & Garden", "Sports", "Electronics",
+            "Clothing", "Shoes", "Home & Garden", "Electronics", "Sports",
+            "Clothing", "Electronics", "Toys", "Home & Garden", "Electronics"
+        ],
+        "rating": [5, 1, 5, 1, 5, 2, 5, 2, 4, 4, 5, 1, 5, 1, 5, 1, 5, 2, 5, 3]
     })
